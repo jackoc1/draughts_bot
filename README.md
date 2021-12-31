@@ -47,3 +47,6 @@ play_draughts.py takes three mandatory command line arguments.
 
 ### Example 2
 ``python play_draughts.py -p1=human -p2=draughts_bots/alphabeta_minimax_draughts_bot.py -d=terminal``
+
+# Contributing
+When this is actaully a working release if you'd like to make pull requests for improvements to the graphcial UI, optimisations to the draughts engine or just creating your own draughts bot for others to play against feel free to do so. You can include any info for accreditation at the top of your bots source file if you would like e.g. GitHub account name.
