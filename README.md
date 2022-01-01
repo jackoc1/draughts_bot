@@ -50,6 +50,8 @@ play_draughts.py takes three mandatory command line arguments.
 # Running tests
 ...
 
+_Note: There are no tests for the display modules as I'm not sure how to go about unit testing a UI._
+
 # Contributing
 When this is actually a working release if you'd like to make pull requests for improvements to the graphcial UI,  
 optimisations to the draughts engine or just creating your own draughts bot for others to play against feel free to  
