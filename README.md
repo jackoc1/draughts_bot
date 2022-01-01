@@ -14,20 +14,17 @@ The draughts_bot repository contains two packages:
 ## draughts
 A package which contains the modules necessary for a basic implementation for a playable game of draughts.
 
-|        Module         | Description                                                              |
-|:---------------------:|:-------------------------------------------------------------------------|
-|       board.py        | Logical backend for managing the game state and enforcing the game rules |
-|       player.py       | Allows players human/bot to interact with the board                      |
-|  terminal_display.py  |                                                                          |
-| graphical_display.py  |                                                                          |
+|        Module         | Description                                                                                      |
+|:---------------------:|:-------------------------------------------------------------------------------------------------|
+|       board.py        | Logical backend for managing the game state and enforcing the game rules.                        |
+|       player.py       | Allows players human/bot to interact with the board.                                             |
+|  terminal_display.py  | Frontend which displays a basic draughts board in ASCII form as well as any textual game info.   |
+| graphical_display.py  | Frontend which displays a GUI for players to play draughts or to watch bots play.                |
 
-* __board__: a logical backend for managing the game state and enforcing compliance with the game's rules at all times.
-* __player__: allows human players to manually interact with the game board.
-* __graphical/terminal__: displays the board and player choices (if human) to either a terminal or graphical window.
 
 ## draughts_bots
-A package which contains different draughts_bots designed to be usable in the draughts module as well as other draughts
-games so long as game state is converted to a readable form by the bot.
+A package which contains different draughts_bots designed to be usable in any draughts game so long as game state is  
+converted to a readable form by the bot.
 
 For now just contains an alpha-beta minimax bot although more can be added.
 
@@ -48,5 +45,12 @@ play_draughts.py takes three mandatory command line arguments.
 ### Example 2
 ``python play_draughts.py -p1=human -p2=draughts_bots/alphabeta_minimax_draughts_bot.py -d=terminal``
 
+# Running tests
+...
+
 # Contributing
-When this is actaully a working release if you'd like to make pull requests for improvements to the graphcial UI, optimisations to the draughts engine or just creating your own draughts bot for others to play against feel free to do so. You can include any info for accreditation at the top of your bots source file if you would like e.g. GitHub account name.
+When this is actually a working release if you'd like to make pull requests for improvements to the graphcial UI,  
+optimisations to the draughts engine or just creating your own draughts bot for others to play against feel free to  
+do so.  
+
+You can include any info for accreditation at the top of your bots source file if you would like e.g. GitHub account name.
