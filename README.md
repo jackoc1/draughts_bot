@@ -3,8 +3,8 @@ The reason I created this project is to practice software design while including
 to familiarise myself with algorithms used in machine learning and AI.  
 
 This project is built exclusively in Python since understanding and not performance is my main goal. Python is also the  
-standard language for most machine learning projects if I end up including and bots capable of being trained, rather than  
-brute forcing moves.
+standard language for most machine learning projects, which will be handy if I end up including any bots capable  
+of being trained, rather than just brute forcing moves with a state space search.
 
 # draughts_bot
 The draughts_bot repository contains two packages:
@@ -14,12 +14,14 @@ The draughts_bot repository contains two packages:
 ## draughts
 A package which contains the modules necessary for a basic implementation for a playable game of draughts.
 
-|        Module         | Description                                                                                      |
-|:---------------------:|:-------------------------------------------------------------------------------------------------|
-|       board.py        | Logical backend for managing the game state and enforcing the game rules.                        |
-|       player.py       | Allows players human/bot to interact with the board.                                             |
-|  terminal_display.py  | Frontend which displays a basic draughts board in ASCII form as well as any textual game info.   |
-| graphical_display.py  | Frontend which displays a GUI for players to play draughts or to watch bots play.                |
+|        Module        | Description                                                                                     |
+|:--------------------:|:------------------------------------------------------------------------------------------------|
+|       board.py       | Logical backend for managing the game state and enforcing the game rules.                       |
+| player_interface.py  | Abstract base class which bot and player must implement to ensure functionality with the board. |
+|      player.py       | Allows human players to interact with the board.                                                |
+|        bot.py        | Makes use of bots in draughts_bots decisions to automatically interact with the board.          |
+| terminal_display.py  | Frontend which displays a basic draughts board in ASCII form as well as any textual game info.  |
+| graphical_display.py | Frontend which displays a GUI for players to play draughts or to watch bots play.               |
 
 
 ## draughts_bots
