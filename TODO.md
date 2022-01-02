@@ -20,12 +20,13 @@ Completed tasks will be given strikethrough formatting.
    1. test_board
    2. test_bot
    3. test_player
-5. Tests for draughts_bots
+5. Integration testing?
+6. Play some games
+7. Tests for draughts_bots
    1. random_choice_draughts_bot
    2. alphabeta_minimax_draughts_bot
-7. Code draughts_bot
+8. Code draughts_bot
    1. random_choice_draughts_bot
    2. alphabeta_minimax_draughts_bot
-8. Integration testing?
-9. Play some games
+9. Play against a bot
 10. Documentation
