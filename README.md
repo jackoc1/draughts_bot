@@ -4,7 +4,10 @@ to familiarise myself with algorithms used in machine learning and AI.
 
 This project is built exclusively in Python since understanding and not performance is my main goal. Python is also the  
 standard language for most machine learning projects, which will be handy if I end up including any bots capable  
-of being trained, rather than just brute forcing moves with a state space search.
+of being trained, rather than just brute forcing moves with a state space search.  
+
+I chose draughts over chess because the rules are much simpler to implement and the goal isn't to implement the  
+most complex game possible. 
 
 # draughts_bot
 The draughts_bot repository contains two packages:
@@ -28,7 +31,7 @@ A package which contains the modules necessary for a basic implementation for a 
 A package which contains different draughts_bots designed to be usable in any draughts game so long as game state is  
 converted to a readable form by the bot.
 
-For now just contains an alpha-beta minimax bot although more can be added.
+For now just contains a random choice bot and an alpha-beta minimax bot although more can be added.
 
 # Usage
 play_draughts.py takes three mandatory command line arguments.
