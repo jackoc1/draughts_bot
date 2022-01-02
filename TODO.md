@@ -6,11 +6,11 @@ Completed tasks will be given strikethrough formatting.
 
 # TODO
 1. Diagrams of draughts modules
-   1. Class diagram for each module
+   1. ~~Class diagram for each module~~
    2. Display mockups
       1. Terminal
       2. GUI
-   3. Sequence diagram of a game running
+   3. ~~Sequence diagram of a game running~~
 2. Diagram of model for bot class and external AI algorithms
 3. Tests for draughts modules
    1. test_board
