@@ -1,20 +1,21 @@
 from abc import ABC, abstractmethod
 
-def PlayerInterface(ABC):
-    """
-
-    :param ABC:
-    :return:
-    """
-
+"""
+Abstract base class which all player classes must implement to ensure compatibility with the board and draughts classes.
+"""
+class PlayerInterface(ABC):
     @abstractmethod
-    def move(self):
+    def get_move(self):
         pass
 
     @abstractmethod
-    def _search(self):
+    def get_capture(self):
         pass
 
     @abstractmethod
-    def copy_board(self):
+    def forfeit(self):
+        pass
+
+    @abstractmethod
+    def offer_draw(self):
         pass
