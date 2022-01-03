@@ -7,10 +7,10 @@ class Board:
 
     board = property(lambda self: self._board)
 
-    def move(self, piece, position):
+    def move(self, start_position, end_position):
         pass
 
-    def capture(self, piece, position):
+    def capture(self, start_position, end_position):
         pass
 
     def get_player_pieces(self, player):

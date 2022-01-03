@@ -21,7 +21,7 @@ class Draughts:
     def valid_moves(self, player):  # player 1 == 0, player 2 colour == 1
         pass
 
-    def get_player_move(self):
+    def get_player_move(self):  # have if capturing check
         pass
 
     def next_turn(self):
