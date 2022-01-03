@@ -1,9 +1,9 @@
-from draughts.piece import Piece
+from copy import deepcopy
 
 
 class Board:
     def __init__(self):
-        self._board = []
+        self._board = [[0] * 8] * 8
 
     board = property(lambda self: self._board)
 
@@ -21,3 +21,11 @@ class Board:
 
     def _promote(self, piece):  # likely will delete
         pass
+
+    def __deepcopy__(self, memodict={}):  # StackOverflow
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memodict[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memodict))
+        return result
