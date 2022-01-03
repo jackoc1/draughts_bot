@@ -16,5 +16,8 @@ class Board:
     def get_player_pieces(self, player):
         pass
 
+    def get_piece(self, position):
+        pass
+
     def _promote(self, piece):  # likely will delete
         pass
