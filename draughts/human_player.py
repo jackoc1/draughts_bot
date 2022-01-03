@@ -7,9 +7,6 @@ class HumanPlayer(PlayerInterface):
     def get_move(self):
         pass
 
-    def get_capture(self):
-        pass
-
     def forfeit(self):
         pass
 

@@ -10,9 +10,6 @@ class BotPlayer(PlayerInterface):
     def get_move(self):
         pass
 
-    def capture(self):
-        pass
-
     def forfeit(self):
         pass
 

@@ -9,10 +9,6 @@ class PlayerInterface(ABC):
         pass
 
     @abstractmethod
-    def get_capture(self):
-        pass
-
-    @abstractmethod
     def forfeit(self):
         pass
 
