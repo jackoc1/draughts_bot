@@ -1,6 +1,6 @@
 class Piece:
-    def __init__(self, colour):
-        self._colour = colour
+    def __init__(self, player):
+        self._player = player
         self._promoted = False
 
     colour = property(lambda self: self._colour)

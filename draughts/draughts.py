@@ -13,10 +13,10 @@ class Draughts:
     player_2 = property(lambda self: self._player_2)
     active_player = property(lambda self: self._active_player)
 
-    def valid_moves(self, colour):  # player 1 colour == 0, player 2 colour == 1
+    def valid_moves(self, player):  # player 1 == 0, player 2 colour == 1
         pass
 
-    def valid_captures(self, colour):
+    def valid_captures(self, player):
         pass
 
     def get_player_move(self):

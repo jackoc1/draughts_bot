@@ -13,7 +13,7 @@ class Board:
     def capture(self, piece, position):
         pass
 
-    def get_colour_pieces(self, colour):
+    def get_player_pieces(self, player):
         pass
 
     def _promote(self, piece):
