@@ -15,13 +15,16 @@ class Draughts:
     active_player = property(lambda self: self._active_player)
     turncount = property(lambda self: self._turn_count)
 
+    def play(self):
+        pass
+
     def valid_moves(self, player):  # player 1 == 0, player 2 colour == 1
         pass
 
     def get_player_move(self):
         pass
 
-    def _next_turn(self):
+    def next_turn(self):
         pass
 
     def _valid_moves(self, player):
