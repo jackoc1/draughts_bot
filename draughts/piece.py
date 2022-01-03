@@ -3,7 +3,7 @@ class Piece:
         self._player = player
         self._promoted = False
 
-    colour = property(lambda self: self._colour)
+    player = property(lambda self: self._player)
     promoted = property(lambda self: self._promoted)
 
     def promote(self):
