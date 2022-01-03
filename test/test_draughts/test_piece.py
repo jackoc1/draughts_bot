@@ -1,4 +1,5 @@
 import unittest
+
 from draughts.piece import Piece
 
 
