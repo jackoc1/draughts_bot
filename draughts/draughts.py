@@ -8,12 +8,14 @@ class Draughts:
         self._player_2 = player_2
         self._active_player = player_1
         self._turn_count = 0
+        self._winner = None
 
     board = property(lambda self: self._board)
     player_1 = property(lambda self: self._player_1)
     player_2 = property(lambda self: self._player_2)
     active_player = property(lambda self: self._active_player)
     turn_count = property(lambda self: self._turn_count)
+    winner = property(lambda self: self._winner)
 
     def play(self):
         pass
