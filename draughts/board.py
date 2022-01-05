@@ -29,3 +29,40 @@ class Board:
         for k, v in self.__dict__.items():
             setattr(result, k, deepcopy(v, memodict))
         return result
+
+
+class Move:
+    def __init__(self, piece, start_position, end_position):
+        if 0 <= start_position < 8 and 0 <= end_position < 8:
+            self._piece = piece
+            self._start_position = start_position
+            self._end_position = end_position
+        else:
+            raise ValueError(f"Invalid position ({self._start_position} {self._end_position}")
+
+    piece = property(lambda self: self._piece)
+    start_position = property(lambda self: self._start_position)
+    end_position = property(lambda self: self._end_position)
+
+
+class Capture:
+    def __init__(self, piece, start_position, end_position):
+        self._piece = piece
+        self._start_position = start_position
+        self._end_position = end_position
+
+    piece = property(lambda self: self._piece)
+    start_position = property(lambda self: self._start_position)
+    end_position = property(lambda self: self._end_position)
+
+
+class Piece:
+    def __init__(self, player):
+        self._player = player
+        self._promoted = False
+
+    player = property(lambda self: self._player)
+    promoted = property(lambda self: self._promoted)
+
+    def promote(self):
+        pass
