@@ -4,6 +4,9 @@ from draughts.board import Move, Piece
 
 
 class MoveTest(unittest.TestCase):
+    """
+    Assumptions:
+    """
     def setUp(self):
         self.piece = Piece(0)
 
@@ -36,15 +39,15 @@ class MoveTest(unittest.TestCase):
         self.assertRaises(ValueError, Move.__init__, (self.piece, (2, 2), (0, 0)))
         self.assertRaises(ValueError, Move.__init__, (self.piece, (3, 5), (1, 7)))
 
-    def test_no_errors_if_valid_move_unpromoted(self):
+    def test_no_value_errors_if_valid_move_unpromoted(self):
         try:
             Move(self.piece, (0, 0), (1, 1))
             Move(self.piece, (3, 5), (2, 6))
             Move(self.piece, (5, 5), (6, 6))
         except ValueError:
-            self.fail("Valid move not accepted.")
+            self.fail("Value error raised despite valid move arguments.")
 
-    def test_no_errors_if_valid_move_promoted(self):
+    def test_no_value_errors_if_valid_move_promoted(self):
         self.piece.promote()
         try:
             Move(self.piece, (0, 0), (1, 1))
@@ -52,7 +55,7 @@ class MoveTest(unittest.TestCase):
             Move(self.piece, (2, 2), (1, 3))
             Move(self.piece, (5, 5), (6, 4))
         except ValueError:
-            self.fail("Valid move not accepted")
+            self.fail("Value error raised despite valid movee arguments.")
 
 
 if __name__ == '__main__':
