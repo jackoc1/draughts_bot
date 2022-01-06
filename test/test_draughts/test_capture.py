@@ -6,6 +6,8 @@ from draughts.board import Capture, Piece
 class CaptureTest(unittest.TestCase):
     """
     Assumptions:
+
+    TODO: Separate unpromoted capture tests into player 0 and player 1 since different directions
     """
     def setUp(self):
         self.piece = Piece(0)

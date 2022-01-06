@@ -1,6 +1,6 @@
 import unittest
 
-from draughts.piece import Piece
+from draughts.board import Piece
 
 
 class PieceTest(unittest.TestCase):
@@ -30,6 +30,12 @@ class PieceTest(unittest.TestCase):
         self.assertEqual(piece.promoted, True)
         piece.promoted()
         self.assertEqual(piece.promoted, True)
+
+    def test_equal_pieces_are_equal(self):
+        pass
+
+    def test_not_equal_pieces_are_not_equal(self):
+        pass
 
 
 if __name__ == '__main__':

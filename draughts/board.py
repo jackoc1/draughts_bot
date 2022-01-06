@@ -5,12 +5,13 @@ class Board:
     def __init__(self):
         self._board = [[0] * 8] * 8
 
-    board = property(lambda self: self._board)
-
     def move(self, start_position, end_position):
         pass
 
     def capture(self, start_position, end_position):
+        pass
+
+    def get_board(self):  # don't expose internals
         pass
 
     def get_player_pieces(self, player):
@@ -65,4 +66,7 @@ class Piece:
     promoted = property(lambda self: self._promoted)
 
     def promote(self):
+        pass
+
+    def __eq__(self, other_piece):
         pass

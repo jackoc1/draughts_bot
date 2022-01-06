@@ -6,6 +6,8 @@ from draughts.board import Move, Piece
 class MoveTest(unittest.TestCase):
     """
     Assumptions:
+
+    TODO: Separate unpromoted move tests into player 0 and player 1 since different directions
     """
     def setUp(self):
         self.piece = Piece(0)
