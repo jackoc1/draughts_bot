@@ -17,7 +17,7 @@ class CaptureTest(unittest.TestCase):
         self.assertRaises(ValueError, Capture.__init__, (self.piece, (0, 0), (2, -2)))
 
     def test_value_error_if_unpromoted_piece_not_finishing_forward_two_squares_diagonally(self):
-        self.assertRaises(ValueError, Capture.__init__, (self.plece, (3, 5), (1, 3)))
+        self.assertRaises(ValueError, Capture.__init__, (self.piece, (3, 5), (1, 3)))
         self.assertRaises(ValueError, Capture.__init__, (self.piece, (4, 4), (7, 7)))
         self.assertRaises(ValueError, Capture.__init__, (self.piece, (5, 5), (7, 3)))
         self.assertRaises(ValueError, Capture.__init__, (self.piece, (3, 3), (3, 5)))
@@ -44,6 +44,7 @@ class CaptureTest(unittest.TestCase):
             Capture(self.piece, (3, 3), (5, 1))
         except ValueError:
             self.fail("Value error raised despite valid capture arguments")
+
 
 if __name__ == '__main__':
     unittest.main()
