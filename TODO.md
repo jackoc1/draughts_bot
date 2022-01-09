@@ -24,9 +24,16 @@ Completed tasks will be given strikethrough formatting.
 6. Play some games
 7. Tests for draughts_bots
    1. random_choice_draughts_bot
-   2. alphabeta_minimax_draughts_bot
-8. Code draughts_bot
+   2. basic_heuristic_draughts_bot
+   3. alphabeta_minimax_draughts_bot
+8. Code draughts_bots
    1. random_choice_draughts_bot
-   2. alphabeta_minimax_draughts_bot
+   2. basic_heurisitc_draughts_bot
+   3. alphabeta_minimax_draughts_bot
 9. Play against a bot
 10. Documentation
+
+# Future Possibilities
+* Additional rulesets
+* Game hosted online and players on separate computers
+* 
