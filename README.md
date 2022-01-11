@@ -17,21 +17,19 @@ The draughts_bot repository contains two packages:
 ## draughts
 A package which contains the modules necessary for a basic implementation for a playable game of draughts.
 
-|        Module        | Description                                                                                     |
-|:--------------------:|:------------------------------------------------------------------------------------------------|
-|       board.py       | Logical backend for managing the game state and enforcing the game rules.                       |
-| player_interface.py  | Abstract base class which bot and player must implement to ensure functionality with the board. |
-|      player.py       | Allows human players to interact with the board.                                                |
-|        bot.py        | Makes use of bots in draughts_bots decisions to automatically interact with the board.          |
-| terminal_display.py  | Frontend which displays a basic draughts board in ASCII form as well as any textual game info.  |
-| graphical_display.py | Frontend which displays a GUI for players to play draughts or to watch bots play.               |
+|   Module    | Description                                                                                 |
+|:-----------:|:--------------------------------------------------------------------------------------------|
+|  board.py   | Game board which keeps track of a player's draughts pieces and their movements.             |
+| draughts.py | Backend for managing game logic and getting player moves.                                   |
+|  player.py  | Allows human/bot players to interact with the draughts game class.                          |
+| display.py  | Terminal/Graphical frontend which displays an interactive draughts board and any game info. |
 
 
 ## draughts_bots
 A package which contains different draughts_bots designed to be usable in any draughts game so long as game state is  
 converted to a readable form by the bot.
 
-For now just contains a random choice bot and an alpha-beta minimax bot although more can be added.
+For now just contains a random choice, basic heuristic and alpha-beta minimax bot although more can be added.
 
 # Usage
 play_draughts.py takes three mandatory command line arguments.
