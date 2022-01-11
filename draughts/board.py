@@ -1,6 +1,6 @@
 class Board:
-    def __init__(self):
-        self._board = [[0] * 8] * 8
+    def __init__(self, num_rows=8, num_cols=8, sample_board=[]):
+        self._board = [[0] * num_rows] * num_cols
 
     def move(self, start_position, end_position):
         pass
@@ -17,7 +17,7 @@ class Board:
     def get_piece(self, position):
         pass
 
-    def _promote(self, piece):  # likely will delete
+    def promote(self, piece):
         pass
 
 
