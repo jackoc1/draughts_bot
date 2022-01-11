@@ -1,6 +1,6 @@
 import unittest
 
-from draughts.board import Board, Piece, Move, Capture
+from draughts.board import Board, Piece
 
 
 class BoardTest(unittest.TestCase):
