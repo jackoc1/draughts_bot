@@ -1,11 +1,11 @@
 import unittest
 
 from draughts.draughts import Draughts
-from draughts.player_interface import PlayerInterface
+from draughts.abstract_player import AbstractPlayer
 
 
 class DraughtsTest(unittest.TestCase):
-    class TestPlayer(PlayerInterface):
+    class TestPlayer(AbstractPlayer):
         def get_move(self, start_position, end_position):  # signatures not matching is fine, mock class only
             return start_position, end_position
 

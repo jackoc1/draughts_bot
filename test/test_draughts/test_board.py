@@ -63,7 +63,7 @@ class BoardTest(unittest.TestCase):
         self.assertEqual(0, self.board.get_piece(start_position_2))
 
     def test_captured_piece_removed_from_board(self):
-
+        pass
 
     def test_capturing_piece_in_right_position(self):
         pass
