@@ -14,22 +14,22 @@ class AbstractPlayer(ABC):
     name = property(lambda self: self._name)
 
     @abstractmethod
-    def get_move(self, valid_moves): return
+    def get_move(self, valid_moves) -> ((int, int), (int, int)): return
 
     @abstractmethod
-    def accept_draw(self): return
+    def accept_draw(self) -> bool: return
 
     @abstractmethod
-    def move_accepted(self): return
+    def move_accepted(self) -> None: return
 
     @abstractmethod
-    def win(self): return
+    def win(self) -> None: return
 
-    def _update_display_board(self):
+    def _update_display_board(self) -> None:
         if self._display:
             self._display.update_board()
 
-    def _update_display_winner(self):
+    def _update_display_winner(self) -> None:
         if self._display:
             self._display.display_winner(self.name)
         else:
@@ -40,13 +40,13 @@ class HumanPlayer(AbstractPlayer):
     def __init__(self, name, display):
         super(name, display)
 
-    def get_move(self, valid_moves): return
+    def get_move(self, valid_moves) -> ((int, int)): return
 
-    def accept_draw(self): return
+    def accept_draw(self) -> bool: return
 
-    def move_accepted(self): return
+    def move_accepted(self) -> None: return
 
-    def win(self): return
+    def win(self) -> None: return
 
 
 class BotPlayer(AbstractPlayer):
@@ -55,10 +55,10 @@ class BotPlayer(AbstractPlayer):
         self._bot = bot
         self._game = game
 
-    def get_move(self, valid_moves): return
+    def get_move(self, valid_moves) -> ((int, int), (int, int)): return
 
-    def accept_draw(self): return
+    def accept_draw(self) -> bool: return
 
-    def move_accepted(self): return
+    def move_accepted(self) -> None: return
 
-    def win(self): return
+    def win(self) -> None: return
