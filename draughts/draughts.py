@@ -4,31 +4,27 @@ from draughts.board import Board
 class Draughts:
     def __init__(self, player_1, player_2):
         self._board = Board()
-        self._player_1 = player_1  # import different class based on command line arguments
+        self._player_1 = player_1  # import different classes based on command line arguments
         self._player_2 = player_2
-        self._active_player = player_1
         self._turn_count = 0
-        self._winner = None
 
-    board = property(lambda self: self._board)
     player_1 = property(lambda self: self._player_1)
     player_2 = property(lambda self: self._player_2)
-    active_player = property(lambda self: self._active_player)
     turn_count = property(lambda self: self._turn_count)
-    winner = property(lambda self: self._winner)
 
-    def play(self):
-        pass
+    def get_board(self): return
 
-    def next_turn(self):
-        pass
+    def new_game(self, swap_pieces): return
 
     @staticmethod
-    def valid_moves(player, board):
-        pass
+    def valid_moves(board): return
 
-    def _valid_moves(self, player):  # player 1 == 0, player 2 == 1
-        pass
+    def _next_turn(self): return
 
-    def _valid_captures(self, player):
-        pass
+    @staticmethod
+    def _valid_moves(board, turn_count): return
+
+    @staticmethod
+    def _valid_captures(board, turn_count): return
+
+
