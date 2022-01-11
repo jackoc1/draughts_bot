@@ -5,9 +5,6 @@ class Board:
     def move(self, start_position, end_position):
         pass
 
-    def capture(self, start_position, end_position):
-        pass
-
     def get_board(self):  # don't expose internals
         pass
 
@@ -20,6 +17,11 @@ class Board:
     def promote(self, piece):
         pass
 
+    def add_piece(self, position):
+        pass
+
+    def remove_piece(self, position):
+        pass
 
 class Piece:
     def __init__(self, player):
