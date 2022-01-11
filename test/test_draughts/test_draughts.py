@@ -1,7 +1,7 @@
 import unittest
 
 from draughts.draughts import Draughts
-from draughts.abstract_player import AbstractPlayer
+from draughts.player import AbstractPlayer
 
 
 class DraughtsTest(unittest.TestCase):

@@ -7,9 +7,8 @@ class AbstractPlayer(ABC):
     classes.
     """
     @abstractmethod
-    def __init__(self, name, game, display):
+    def __init__(self, name, display):
         self._name = name
-        self._game = game
         self._display = display
 
     name = property(lambda self: self._name)
@@ -35,3 +34,31 @@ class AbstractPlayer(ABC):
             self._display.display_winner(self.name)
         else:
             print(f"{self.name} wins")
+
+
+class HumanPlayer(AbstractPlayer):
+    def __init__(self, name, display):
+        super(name, display)
+
+    def get_move(self, valid_moves): return
+
+    def accept_draw(self): return
+
+    def move_accepted(self): return
+
+    def win(self): return
+
+
+class BotPlayer(AbstractPlayer):
+    def __init__(self, bot, game, name, display):
+        super(name, display)
+        self._bot = bot
+        self._game = game
+
+    def get_move(self, valid_moves): return
+
+    def accept_draw(self): return
+
+    def move_accepted(self): return
+
+    def win(self): return
