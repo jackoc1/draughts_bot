@@ -1,11 +1,16 @@
 class Board:
-    def __init__(self, num_rows=8, num_cols=8, sample_board=[]):
+    def __init__(self, num_rows=8, num_cols=8):
         self._board = [[0] * num_rows] * num_cols
+        self._num_rows = num_rows
+        self._num_cols = num_cols
+
+    num_rows = property(lambda self: self._num_rows)
+    num_cols = property(lambda self: self._num_cols)
 
     def move(self, start_position, end_position):
         pass
 
-    def get_board(self):  # don't expose internals
+    def get_board(self) -> "Board":  # don't expose internals
         pass
 
     def get_player_pieces(self, player):
@@ -22,6 +27,7 @@ class Board:
 
     def remove_piece(self, position):
         pass
+
 
 class Piece:
     def __init__(self, player):
