@@ -1,10 +1,10 @@
-from typing import Tuple
+from typing import Tuple, Type
 
 from draughts.player import AbstractPlayer
 
 
 class Board:
-    def __init__(self, num_rows=8, num_cols=8) -> None:
+    def __init__(self, num_rows: int = 8, num_cols: int = 8) -> None:
         self._board = [[0] * num_rows] * num_cols
         self._num_rows = num_rows
         self._num_cols = num_cols
@@ -12,25 +12,25 @@ class Board:
     num_rows = property(lambda self: self._num_rows)
     num_cols = property(lambda self: self._num_cols)
 
-    def move(self, start_position: (int, int), end_position: (int, int)) -> None:
+    def move(self, start_position: Tuple[int, int], end_position: Tuple[int, int]) -> None:
         pass
 
     def get_board(self) -> "Board":  # don't expose internals
         pass
 
-    def get_player_pieces(self, player: AbstractPlayer) -> Tuple[("Piece", (int, int))]:
+    def get_player_pieces(self, player: Type[AbstractPlayer]) -> Tuple[("Piece", (int, int))]:
         pass
 
-    def get_piece(self, position: (int, int)) -> "Piece":
+    def get_piece(self, position: Tuple[int, int]) -> "Piece":
         pass
 
     def promote(self, piece: "Piece") -> None:
         pass
 
-    def add_piece(self, position: (int, int)) -> None:
+    def add_piece(self, position: Tuple[int, int]) -> None:
         pass
 
-    def remove_piece(self, position: (int, int)) -> None:
+    def remove_piece(self, position: Tuple[int, int]) -> None:
         pass
 
 

@@ -1,7 +1,8 @@
 import tkinter as tk
 from abc import ABC, abstractmethod
+from typing import Tuple
 
-from draughts.draughts import Draughts
+from draughts.board import Board
 
 
 class AbstractDisplay(ABC):
@@ -10,56 +11,54 @@ class AbstractDisplay(ABC):
     classes.
     """
     @abstractmethod
-    def update_board(self): return
+    def update_board(self, board: Board) -> None: return
 
     @abstractmethod
-    def get_move(self): return
+    def get_move(self, valid_moves: Tuple[Tuple[int, int], ...]) -> Tuple[int, int]: return
 
     @abstractmethod
-    def display_winner(self, name): return
+    def display_winner(self, name: str) -> None: return
 
 
 class GraphicalDisplay:
-    def __init__(self, game, player_1_colour, player_2_colour, light_square_colour, dark_square_colour, bg_colour):
-        self._game = game
+    def __init__(self, player_1_colour: str, player_2_colour: str, light_square_colour: str,
+                 dark_square_colour: str, bg_colour: str) -> None:
         self._colours = {"player_1_pieces": player_1_colour, "player_2_pieces": player_2_colour,
                          "light_squares": light_square_colour, "dark_squares": dark_square_colour, "bg": bg_colour}
 
-    def update_board(self):
+    def update_board(self, board: Board) -> None:
         pass
 
-    def player_input(self):
+    def get_move(self, valid_moves: Tuple[Tuple[int, int], ...]) -> Tuple[int, int]:
         pass
 
-    def highlight_available_moves(self):
+    def display_winner(self, name: str) -> None:
         pass
 
-    def highlight_available_captures(self):
+    def _highlight_available_moves(self) -> None:
         pass
 
-    def toggle_clickable(self):
-        pass
-
-    def display_winner(self):
+    def _highlight_available_captures(self) -> None:
         pass
 
 
 class TerminalDisplay:
-    def __init__(self, game, empty_square_character):
-        self._game = game
+    def __init__(self, empty_square_character: str):
         self._empty_square_character = empty_square_character
 
-    def print_board(self):
+    def update_board(self, board: Board) -> None:
         pass
 
-    def player_input(self):
+    def get_move(self, valid_moves: Tuple[Tuple[int, int], ...]) -> Tuple[int, int]:
         pass
 
-    def print_available_moves(self):
+    def display_winner(self, name: str) -> None:
         pass
 
-    def print_available_captures(self):
+    def _print_available_moves(self) -> None:
         pass
 
-    def print_winner(self):
+    def _print_available_captures(self) -> None:
         pass
+
+
