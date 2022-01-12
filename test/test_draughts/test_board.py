@@ -9,18 +9,22 @@ class BoardTest(unittest.TestCase):
 
     I think I may actually have it setup such that I can't test if add piece adds to the private board attribute in
      the right place, only if add piece and get piece point to the same positions on the board...
+
+    Did try to avoid any non-linear time operations since there are a lot of tests.
     """
     def setUpClass(self):
         self.populated_board = Board(8, 8)
+        self.piece_position_1, self.piece_position_2, self.piece_position_3, self.piece_position_4 \
+            = (2, 3), (6, 2), (1, 0), (7, 7)
+        self.piece_colour_1, self.piece_colour_2, self.piece_colour_3, self.piece_colour_4 \
+            = 0, 0, 1, 1
 
-        piece_position_1, piece_position_2, piece_position_3, piece_position_4 = (2, 3), (6, 2), (1, 0), (7, 7)
-        piece_colour_1, piece_colour_2, piece_colour_3, piece_colour_4 = 0, 0, 1, 1
-        self.populated_board.add_piece(piece_colour_1, piece_position_1)
-        self.populated_board.add_piece(piece_colour_2, piece_position_2)
-        self.populated_board.add_piece(piece_colour_3, piece_position_3)
-        self.populated_board.add_piece(piece_colour_4, piece_position_4)
-        self.populated_board.promote(piece_position_2)
-        self.populated_board.promote(piece_position_4)
+        self.populated_board.add_piece(self.piece_colour_1, self.piece_position_1)
+        self.populated_board.add_piece(self.piece_colour_2, self.piece_position_2)
+        self.populated_board.add_piece(self.piece_colour_3, self.piece_position_3)
+        self.populated_board.add_piece(self.piece_colour_4, self.piece_position_4)
+        self.populated_board.promote(self.piece_position_2)
+        self.populated_board.promote(self.piece_position_4)
 
     def setUp(self):
         self.board = Board(8, 8)
@@ -124,39 +128,82 @@ class BoardTest(unittest.TestCase):
         self.assertEqual(test_piece_4, self.board.get_piece(piece_position_4))
 
     def test_get_player_pieces_does_not_return_any_of_the_other_players_pieces(self):
-        pass
+        player_1_pieces = self.populated_board.get_player_pieces(0)
+        player_2_pieces = self.populated_board.get_player_pieces(1)
+
+        for piece in player_1_pieces:
+            if piece[0].colour != 0:
+                self.fail("Player 2's pieces show up in player 1's pieces.")
+
+        for piece in player_2_pieces:
+            if piece[0].colour != 1:
+                self.fail("Player 1's pieces show up in player 2's pieces.")
 
     def test_get_player_pieces_returns_all_that_players_pieces(self):
-        pass
+        """Player 2 pieces subtest reliant on player 1 pieces subtest being passed."""
+        player_1_pieces = self.populated_board.get_player_pieces(0)
+        player_2_pieces = self.populated_board.get_player_pieces(1)
+        all_pieces = []
+        for row in range(self.populated_board.num_rows):
+            for col in range(self.populated_board.num_cols):
+                if self.populated_board.get_piece((row, col)):
+                    all_pieces.append([self.populated_board.get_piece((row, col)), (row, col)])
 
-    def test_get_player_pieces_returns_pieces_correctly(self):
-        pass
+        for piece, position in player_1_pieces:
+            all_pieces.remove([piece, position])
+        for piece, _ in all_pieces:
+            if piece.colour == 0:
+                self.fail("Not all player 1 pieces in all pieces were found in player_1_pieces.")
+
+        for piece, position in player_2_pieces:
+            all_pieces.remove([piece, position])
+        if all_pieces:
+            self.fail("Not all player 2 pieces were found in player_2_pieces.")
+
+    def test_get_player_pieces_returns_pieces_promoted_state_correctly(self):
+        player_1_pieces = self.populated_board.get_player_pieces(0)
+        player_2_pieces = self.populated_board.get_player_pieces(1)
+
+        for piece, position in player_1_pieces:
+            if piece != self.populated_board.get_piece(position):
+                self.fail("Player 1's pieces do not match the pieces on the board.")
+
+        for piece, position in player_2_pieces:
+            if piece != self.populated_board.get_piece(position):
+                self.fail("Player 2's pieces do not match the pieces on the board.")
+
+    def test_get_player_returns_empty_list_for_players_with_no_pieces(self):
+        self.assertEqual([], self.board.get_player_pieces(0))
+        self.assertEqual([], self.board.get_player_pieces(1))
 
     def test_moved_piece_in_right_position(self):
         start_position_1 = (2, 0)
         end_position_1 = (3, 1)
         piece_1 = self.board.get_piece(start_position_1)
         self.board.move(start_position_1, end_position_1)
-        self.assertEqual(piece_1, self.board.get_piece(end_position_1))
 
         start_position_2 = (5, 3)
         end_position_2 = (4, 4)
         piece_2 = self.board.get_piece(start_position_2)
         self.board.move(start_position_2, end_position_2)
+
+        self.assertEqual(piece_1, self.board.get_piece(end_position_1))
         self.assertEqual(piece_2, self.board.get_piece(end_position_2))
 
     def test_moved_piece_previous_position_now_empty(self):
         start_position_1 = (2, 0)
         end_position_1 = (3, 1)
         self.board.move(start_position_1, end_position_1)
-        self.assertEqual(0, self.board.get_piece(start_position_1))
 
         start_position_2 = (5, 3)
         end_position_2 = (4, 4)
         self.board.move(start_position_2, end_position_2)
+
+        self.assertEqual(0, self.board.get_piece(start_position_1))
         self.assertEqual(0, self.board.get_piece(start_position_2))
 
     def test_value_error_raised_if_invalid_start_position_passed_to_move(self):
+        """4 start positions for the 4 edges of the board you can fall off."""
         start_position_1, end_position_1 = (-1, 2), (3, 2)
         start_position_2, end_position_2 = (9, 2), (3, 2)
         start_position_3, end_position_3 = (3, -2), (3, 2)
@@ -168,6 +215,7 @@ class BoardTest(unittest.TestCase):
         self.assertRaises(ValueError, self.board.move, (start_position_4, end_position_4))
 
     def test_value_error_raised_if_invalid_end_position_passed_to_move(self):
+        """4 end positions for the 4 edges of the board you can fall off."""
         end_position_1, start_position_1 = (-1, 2), (3, 2)
         end_position_2, start_position_2 = (9, 2), (3, 2)
         end_position_3, start_position_3 = (3, -2), (3, 2)
@@ -179,6 +227,7 @@ class BoardTest(unittest.TestCase):
         self.assertRaises(ValueError, self.board.move, (start_position_4, end_position_4))
 
     def test_value_error_raised_if_invalid_start_and_end_position_passed_to_move(self):
+        """4 start and end positions for the 4 edges of the board you can fall off. (Not exhaustive)"""
         start_position_1, end_position_1 = (-1, 2), (20, 3)
         start_position_2, end_position_2 = (9, 2), (3, 20)
         start_position_3, end_position_3 = (3, -2), (-2, 2)
@@ -190,6 +239,7 @@ class BoardTest(unittest.TestCase):
         self.assertRaises(ValueError, self.board.move, (start_position_4, end_position_4))
 
     def test_value_error_raised_if_invalid_position_passed_to_add_piece(self):
+        """4 positions for the 4 edges of the board you can fall off."""
         position_1, position_2, position_3, position_4 = (-1, 3), (10, 4), (3, -2), (6, 9)
 
         self.assertRaises(ValueError, self.board.add_piece, position_1)
@@ -198,6 +248,7 @@ class BoardTest(unittest.TestCase):
         self.assertRaises(ValueError, self.board.add_piece, position_4)
 
     def test_value_error_raised_if_invalid_position_passed_to_remove_piece(self):
+        """4 positions for the 4 edges of the board you can fall off."""
         position_1, position_2, position_3, position_4 = (-1, 3), (10, 4), (3, -2), (6, 9)
 
         self.assertRaises(ValueError, self.board.remove_piece, position_1)
@@ -206,6 +257,7 @@ class BoardTest(unittest.TestCase):
         self.assertRaises(ValueError, self.board.remove_piece, position_4)
 
     def test_value_error_raised_if_invalid_position_passed_to_get_piece(self):
+        """4 positions for the 4 edges of the board you can fall off."""
         position_1, position_2, position_3, position_4 = (-1, 3), (10, 4), (3, -2), (6, 9)
 
         self.assertRaises(ValueError, self.board.get_piece, position_1)
@@ -214,10 +266,24 @@ class BoardTest(unittest.TestCase):
         self.assertRaises(ValueError, self.board.get_piece, position_4)
 
     def test_value_error_raised_if_invalid_position_passed_to_promote(self):
-        pass
+        """4 positions for the 4 edges of the board you can fall off."""
+        position_1, position_2, position_3, position_4 = (-1, 3), (10, 4), (3, -2), (6, 9)
+
+        self.assertRaises(ValueError, self.board.promote, position_1)
+        self.assertRaises(ValueError, self.board.promote, position_2)
+        self.assertRaises(ValueError, self.board.promote, position_3)
+        self.assertRaises(ValueError, self.board.promote, position_4)
 
     def test_value_error_raised_if_invalid_colour_passed_to_get_player_pieces(self):
-        pass
+        colour_less_than_zero = -1
+        colour_greater_than_1 = 3
+        colour_float_between_0_and_1 = 0.5
+        colour_written_as_a_string = "black"
+
+        self.assertRaises(ValueError, self.board.get_player_pieces, colour_less_than_zero)
+        self.assertRaises(ValueError, self.board.get_player_pieces, colour_greater_than_1)
+        self.assertRaises(ValueError, self.board.get_player_pieces, colour_float_between_0_and_1)
+        self.assertRaises(ValueError, self.board.get_player_pieces, colour_written_as_a_string)
 
     def test_promote_promotes_the_specified_piece(self):
         promote_position_1, promote_position_2 = (5, 3), (7, 6)
@@ -243,24 +309,35 @@ class BoardTest(unittest.TestCase):
                 if self.board.get_piece((row, col)).promoted:
                     self.fail("A piece besides the intended piece was promoted.")
 
-    def test_promote_does_not_do_anything_to_board_if_used_on_empty_square(self):
-        pass
-
     def test_get_piece_returns_new_piece_object_each_call(self):
         piece_colour, piece_position = 0, (3, 4)
         self.board.add_piece(piece_colour, piece_position)
-        piece_1, piece_2 = self.board.get_piece(piece_position), self.board.get_piece(piece_position)
+        test_piece_1, test_piece_2 = self.board.get_piece(piece_position), self.board.get_piece(piece_position)
 
-        self.assertIsNot(piece_1, piece_2)
+        self.assertIsNot(test_piece_1, test_piece_2)
 
     def test_get_board_returns_new_board_object_each_call(self):
-        pass
+        test_board_1 = self.board.get_board()
+        test_board_2 = self.board.get_board()
 
-    def test_get_board_returns_new_piece_objects_on_each_call(self):
-        pass
+        self.assertIsNot(test_board_1, test_board_2)
 
     def test_get_player_pieces_returns_new_piece_objects_on_each_call(self):
-        pass
+        test_player_pieces_1 = self.populated_board.get_player_pieces(0)
+        test_player_pieces_2 = self.populated_board.get_player_pieces(0)
+        pieces_dict_1, pieces_dict_2 = dict(), dict()
+        for piece, position in test_player_pieces_1:
+            pieces_dict_1[position] = piece
+        for piece, position in test_player_pieces_2:
+            pieces_dict_2[position] = piece
+
+        for position in pieces_dict_1.keys():
+            if pieces_dict_1[position] is pieces_dict_2[position]:
+                self.fail("Two different calls to get_player_pieces returned same piece")
+
+    def test_promote_does_not_do_anything_to_board_if_used_on_empty_square(self):
+        """Last usage of populated_board so won't interfere with prior tests. Sue me this is my free time."""
+        self.populated_board.promote((0, 7))
 
     def test_get_board_returns_a_board_equal_to_the_current_board(self):
         position_piece_1, position_piece_2, position_piece_3 = (2, 3), (6, 1), (0, 7)
