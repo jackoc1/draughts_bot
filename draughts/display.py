@@ -38,7 +38,7 @@ class GraphicalDisplay:
     def _highlight_available_moves(self) -> None:
         pass
 
-    def _highlight_available_captures(self) -> None:
+    def _highlight_selected_piece(self) -> None:
         pass
 
 
@@ -57,8 +57,3 @@ class TerminalDisplay:
 
     def _print_available_moves(self) -> None:
         pass
-
-    def _print_available_captures(self) -> None:
-        pass
-
-
