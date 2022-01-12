@@ -16,7 +16,7 @@ class Board:
     def get_board(self) -> "Board":  # don't expose internals
         pass
 
-    def get_player_pieces(self, colour: int) -> Tuple[("Piece", (int, int))]:
+    def get_player_pieces(self, colour: int) -> Tuple[Tuple["Piece", Tuple[int, int]], ...]:
         pass
 
     def get_piece(self, position: Tuple[int, int]) -> "Piece":
