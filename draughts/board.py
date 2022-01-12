@@ -4,7 +4,7 @@ from draughts.player import AbstractPlayer
 
 
 class Board:
-    def __init__(self, num_rows=8, num_cols=8) -> "Board":
+    def __init__(self, num_rows=8, num_cols=8) -> None:
         self._board = [[0] * num_rows] * num_cols
         self._num_rows = num_rows
         self._num_cols = num_cols
@@ -35,7 +35,7 @@ class Board:
 
 
 class Piece:
-    def __init__(self, player: AbstractPlayer) -> "Piece":
+    def __init__(self, player: AbstractPlayer) -> None:
         self._player = player
         self._promoted = False
 
