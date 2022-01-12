@@ -7,7 +7,7 @@ class AbstractPlayer(ABC):
     classes.
     """
     @abstractmethod
-    def __init__(self, name, display):
+    def __init__(self, name, display=None):
         self._name = name
         self._display = display
 
@@ -20,10 +20,12 @@ class AbstractPlayer(ABC):
     def accept_draw(self) -> bool: return
 
     @abstractmethod
-    def move_accepted(self) -> None: return
+    def move_accepted(self) -> None:
+        self._update_display_board()
 
     @abstractmethod
-    def win(self) -> None: return
+    def win(self) -> None:
+        self._update_display_winner()
 
     def _update_display_board(self) -> None:
         if self._display:
@@ -40,7 +42,7 @@ class HumanPlayer(AbstractPlayer):
     def __init__(self, name, display):
         super(name, display)
 
-    def get_move(self, valid_moves) -> ((int, int)): return
+    def get_move(self, valid_moves) -> (int, int): return
 
     def accept_draw(self) -> bool: return
 
