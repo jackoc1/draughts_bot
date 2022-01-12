@@ -8,7 +8,7 @@ class BoardTest(unittest.TestCase):
     Tests for 8 x 8 Boards only for now. [row, column]
     """
     def setUp(self):
-        self.board = Board()
+        self.board = Board(8, 8)
 
     def test_add_piece_adds_correct_piece_to_correct_position(self):
         pass
@@ -26,31 +26,6 @@ class BoardTest(unittest.TestCase):
         self.assertEqual(self.board_2.num_cols, len(board_2.get_board()[0]))
         self.assertEqual(self.board_3.num_rows, len(board_3.get_board()))
         self.assertEqual(self.board_3.num_cols, len(board_3.get_board()[0]))
-
-    def test_pieces_in_right_place_on_init_8_by_8(self):
-        row_1 = [Piece(0), 0] * 4
-        row_2 = [0, Piece(0)] * 4
-        row_3 = [0] * 8
-        row_4 = [0, Piece(1)] * 4
-        row_5 = [Piece(1), 0] * 4
-        test_board = [row_1, row_2, row_1, row_3, row_3, row_4, row_5, row_4]
-
-        for row in range(len(test_board)):
-            for col in range(len(test_board[0])):
-                if self.board.get_piece((row, col)) != test_board[row][col]:
-                    self.fail("Board did not initialize correctly.")
-
-    def test_pieces_assigned_to_the_right_players(self):
-        player_1_pieces = self.board.get_player_pieces(0)
-        player_2_pieces = self.board.get_player_pieces(1)
-
-        for position, piece in player_1_pieces:
-            self.assertEqual(self.board.get_piece(position), piece)
-            self.assertEqual(piece.player, 0)
-
-        for position, piece in player_2_pieces:
-            self.assertEqual(self.board.get_piece(position), piece)
-            self.assertEqual(piece.player, 1)
 
     def test_remove_piece_removes_correct_piece(self):
         pass
