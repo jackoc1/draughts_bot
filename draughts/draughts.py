@@ -14,7 +14,7 @@ class Draughts:
     player_2 = property(lambda self: self._player_2)
     turn_count = property(lambda self: self._turn_count)
 
-    def get_board(self) -> None: return
+    def get_board(self) -> Board: return
 
     def new_game(self, swap_pieces: bool) -> None: return
 
@@ -28,6 +28,7 @@ class Draughts:
 
     @staticmethod
     def _valid_moves(board: Board, turn_count: int) -> Tuple[((int, int), (int, int))]: return
+    # flip board, increment turn_counter for player 2 valid moves
 
     @staticmethod
     def _valid_captures(board: Board, turn_count: int) -> Tuple[((int, int), (int, int))]: return
