@@ -12,7 +12,10 @@ class BoardTest(unittest.TestCase):
 
     Did try to avoid any non-linear time operations since there are a lot of tests.
     """
-    def setUpClass(self):
+
+    def setUp(self):
+        self.board = Board(8, 8)
+
         self.populated_board = Board(8, 8)
         self.piece_position_1, self.piece_position_2, self.piece_position_3, self.piece_position_4 \
             = (2, 3), (6, 2), (1, 0), (7, 7)
@@ -25,9 +28,6 @@ class BoardTest(unittest.TestCase):
         self.populated_board.add_piece(self.piece_colour_4, self.piece_position_4)
         self.populated_board.promote(self.piece_position_2)
         self.populated_board.promote(self.piece_position_4)
-
-    def setUp(self):
-        self.board = Board(8, 8)
 
     def test_empty_squares_equal_zero(self):
         for row in self.board.num_rows:
@@ -336,7 +336,6 @@ class BoardTest(unittest.TestCase):
                 self.fail("Two different calls to get_player_pieces returned same piece")
 
     def test_promote_does_not_do_anything_to_board_if_used_on_empty_square(self):
-        """Last usage of populated_board so won't interfere with prior tests. Sue me this is my free time."""
         self.populated_board.promote((0, 7))
 
     def test_get_board_returns_a_board_equal_to_the_current_board(self):
