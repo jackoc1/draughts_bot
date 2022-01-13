@@ -5,8 +5,11 @@ from draughts.player import AbstractPlayer
 
 
 class Draughts:
-    def __init__(self, player_1: Type[AbstractPlayer], player_2: Type[AbstractPlayer]) -> None:
-        self._board = Board()
+    def __init__(self, player_1: Type[AbstractPlayer], player_2: Type[AbstractPlayer], board: Board = None) -> None:
+        if board:
+            self._board = board
+        else:
+            self._board = Draughts.create_standard_board()
         self._player_1 = player_1  # import different classes based on command line arguments
         self._player_2 = player_2
         self._turn_count = 0
@@ -24,6 +27,9 @@ class Draughts:
 
     @staticmethod
     def create_custom_board(sample_board: Tuple[Tuple[int, ...], ...]) -> Board: return
+
+    @staticmethod
+    def create_standard_board() -> Board: return
 
     def _next_turn(self) -> None: return
 
