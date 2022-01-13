@@ -1,19 +1,21 @@
 import unittest
+from typing import Tuple
 
 from draughts.draughts import Draughts
 from draughts.player import AbstractPlayer
 
 
 class DraughtsTest(unittest.TestCase):
-    """English draughts ruleset."""
+    """Unit tests for English draughts ruleset"""
     class TestPlayer(AbstractPlayer):
         def __init__(self, name): super(name)
 
-        def get_move(self, start_position, end_position) -> ((int, int), (int, int)):
+        def get_move(self, start_position: Tuple[int, int], end_position: Tuple[int, int]) \
+                -> Tuple[Tuple[int, int], Tuple[int, int]]:
             """Signature does not match base class so that I can return different moves in tests directly."""
             return start_position, end_position
 
-        def accept_draw(self, accept) -> bool:
+        def accept_draw(self, accept: bool) -> bool:
             """Signature does not match base class so that I can return True/False directly."""
             return accept
 
@@ -26,22 +28,30 @@ class DraughtsTest(unittest.TestCase):
         player_2 = self.TestPlayer("Alice")
         self.game = Draughts(player_1, player_2)
 
-    def test_pieces_in_right_place_on_default_init_8_by_8(self):
+    def test_pieces_in_right_place_on_default_init_8_by_8_standard_board(self):
+        player_1_piece_positions = ((0, 0), (0, 2), (0, 4), (0, 6),
+                                    (1, 1), (1, 3), (1, 5), (1, 7),
+                                    (2, 0), (2, 2), (2, 4), (2, 6))
+        player_2_piece_positions = ((5, 1), (5, 3), (5, 5), (5, 7),
+                                    (6, 0), (6, 2), (6, 4), (6, 6),
+                                    (7, 1), (7, 3), (7, 5), (7, 7))
+        board = self.game.get_board()
+
+        for position in player_1_piece_positions:
+            piece = board.get_piece(position)
+            if piece.colour != 0 and not piece.promoted:
+                self.fail("Player 1 did not have the required pieces in the required positions.")
+
+        for position in player_2_piece_positions:
+            piece = board.get_piece(position)
+            if piece.colour != 1 and not piece.promoted:
+                self.fail("Player 2 did not have the required pieces in the required positions.")
+
+    def test_there_are_no_pieces_on_non_starting_positions(self):
         pass
 
-    def test_pieces_assigned_to_the_right_players_on_default_init_8_by_8(self):
-        player_1_pieces = self.game.get_board().get_player_pieces(self.game.player_1)
-        player_2_pieces = self.game.get_board().get_player_pieces(self.game.player_2)
 
-        for position, piece in player_1_pieces:
-            self.assertEqual(self.game.get_board().get_piece(position), piece)
-            self.assertEqual(piece.player, 0)
-
-        for position, piece in player_2_pieces:
-            self.assertEqual(self.game.get_board().get_piece(position), piece)
-            self.assertEqual(piece.player, 1)
-
-    def test_valid_moves_start_of_game_all_pieces_unpromoted(self):
+    def test_correct_valid_moves_offered_start_of_game_all_pieces_unpromoted(self):
         pass
 
     def test_valid_moves_player_1_piece_on_internal_square(self):
