@@ -35,6 +35,13 @@ class AbstractPlayer(ABC):
     def win(self) -> None:
         self._update_display_winner()
 
+    @abstractmethod
+    def lose(self) -> None: return
+
+    @abstractmethod
+    def draw(self) -> None:
+        self._update_display_draw()
+
     def get_board(self) -> Board:
         return self._game.get_board()
 
@@ -61,6 +68,8 @@ class HumanPlayer(AbstractPlayer):
 
     def win(self) -> None: return
 
+    def draw(self) -> None: return
+
 
 class BotPlayer(AbstractPlayer):
     def __init__(self, name: str, display: Type[AbstractDisplay], bot: Type[AbstractBot], game: Draughts) -> None:
@@ -75,3 +84,5 @@ class BotPlayer(AbstractPlayer):
     def move_accepted(self) -> None: return
 
     def win(self) -> None: return
+
+    def draw(self) -> None: return

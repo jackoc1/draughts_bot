@@ -19,6 +19,9 @@ class AbstractDisplay(ABC):
     @abstractmethod
     def display_winner(self, name: str) -> None: return
 
+    @abstractmethod
+    def display_draw(self) -> None: return
+
 
 class GraphicalDisplay:
     def __init__(self, player_1_colour: str, player_2_colour: str, light_square_colour: str,
@@ -33,6 +36,9 @@ class GraphicalDisplay:
         pass
 
     def display_winner(self, name: str) -> None:
+        pass
+
+    def display_draw(self) -> None:
         pass
 
     def _highlight_available_moves(self) -> None:
@@ -53,6 +59,9 @@ class TerminalDisplay:
         pass
 
     def display_winner(self, name: str) -> None:
+        pass
+
+    def display_draw(self) -> None:
         pass
 
     def _print_available_moves(self) -> None:
