@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Tuple, Type
+from typing import Tuple
 
 from draughts.display import AbstractDisplay
 from draughts.draughts import Draughts
@@ -13,8 +13,9 @@ class AbstractPlayer(ABC):
     Abstract base class which all player classes must implement to ensure compatibility with the board and draughts
     classes.
     """
+
     @abstractmethod
-    def __init__(self, name: str, game: Draughts, display: Type[AbstractDisplay]) -> None:
+    def __init__(self, name: str, game: Draughts, display: AbstractDisplay) -> None:
         self._name = name
         self._game = game
         self._display = display
@@ -22,10 +23,13 @@ class AbstractPlayer(ABC):
     name = property(lambda self: self._name)
 
     @abstractmethod
-    def get_move(self, valid_moves: Tuple[Tuple[int, int], ...]) -> Tuple[Tuple[int, int], Tuple[int, int]]: return
+    def get_move(self, valid_moves: Tuple[Tuple[Tuple[int, int], Tuple[int, int]], ...]) \
+            -> Tuple[Tuple[int, int], Tuple[int, int]]:
+        return
 
     @abstractmethod
-    def accept_draw(self) -> bool: return
+    def accept_draw(self) -> bool:
+        return
 
     @abstractmethod
     def move_accepted(self) -> None:
@@ -36,9 +40,6 @@ class AbstractPlayer(ABC):
         self._update_display_winner()
 
     @abstractmethod
-    def lose(self) -> None: return
-
-    @abstractmethod
     def draw(self) -> None:
         self._update_display_draw()
 
@@ -47,18 +48,21 @@ class AbstractPlayer(ABC):
 
     def _update_display_board(self) -> None:
         if self._display:
-            self._display.update_board()
+            board = self.get_board()
+            self._display.update_board(board)
 
     def _update_display_winner(self) -> None:
         if self._display:
             self._display.display_winner(self.name)
-        else:
-            print(f"{self.name} wins")
+
+    def _update_display_draw(self):
+        if self._display:
+            self._display.display_draw()
 
 
 class HumanPlayer(AbstractPlayer):
-    def __init__(self, name: str, display: Type[AbstractDisplay]) -> None:
-        super().__init__(name, display)
+    def __init__(self, name: str, game: Draughts, display: AbstractDisplay) -> None:
+        super().__init__(name, game, display)
 
     def get_move(self, valid_moves) -> Tuple[int, int]: return
 
@@ -72,10 +76,9 @@ class HumanPlayer(AbstractPlayer):
 
 
 class BotPlayer(AbstractPlayer):
-    def __init__(self, name: str, display: Type[AbstractDisplay], bot: Type[AbstractBot], game: Draughts) -> None:
-        super().__init__(name, display)
+    def __init__(self, name: str, display: AbstractDisplay, bot: AbstractBot, game: Draughts) -> None:
+        super().__init__(name, game, display)
         self._bot = bot
-        self._game = game
 
     def get_move(self, valid_moves) -> Tuple[(int, int), (int, int)]: return
 
