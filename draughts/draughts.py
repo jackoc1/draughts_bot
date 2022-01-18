@@ -4,32 +4,54 @@ from draughts.player import AbstractPlayer
 
 
 class Draughts:
-    def __init__(self, player_1: AbstractPlayer, player_2: AbstractPlayer, board: Board = None) -> None:
+    def __init__(self, player_1: AbstractPlayer, player_2: AbstractPlayer, board: Board = None,
+                 auto_next_turn: bool = True) -> None:
         if board:
             self._board = board
         else:
             self._board = Draughts.create_standard_board()
-        self._player_1 = player_1  # import different classes based on command line arguments
-        self._player_2 = player_2
-        self._turn_count = 0
-        self._turn_draw_offered = None
+        self._player_1: AbstractPlayer = player_1  # import different classes based on command line arguments
+        self._player_2: AbstractPlayer = player_2
+        self._turn_count: int = 0
+        self._auto_next_turn: bool = auto_next_turn
+        self._turn_draw_offered: int = None
+        self._winner: AbstractPlayer = None  # Set to "draw" in case of draw, game is over when winner not None
 
     player_1 = property(lambda self: self._player_1)
     player_2 = property(lambda self: self._player_2)
     turn_count = property(lambda self: self._turn_count)
+    turn_draw_offered = property(lambda self: self._turn_draw_offered)
+    winner = property(lambda self: self._winner)
 
-    def get_board(self) -> Board: return
+    def get_board(self) -> Board: return self._board.get_board()
 
     @staticmethod
     def valid_moves(board: Board, player: int) -> Tuple[Tuple[Tuple[int, int], Tuple[int, int]], ...]: return
 
-    @staticmethod
-    def create_custom_board(sample_board: Tuple[Tuple[int, ...], ...]) -> Board: return
+    def next_turn(self) -> None: return  # do not increment when draw offered or multiple capture
+
+    def start(self) -> None: return  # does turn 1 and first next turn starts turn 2
 
     @staticmethod
-    def create_standard_board() -> Board: return
+    def create_custom_board(sample_board: Tuple[Tuple[int, ...], ...]) -> Board:
+        """
+        sample_board must be a tuple based matrix with constant row and column size (> 0 each) where each element is
+        filled with one of the following symbolic integers.
 
-    def _next_turn(self) -> None: return
+        0 - empty space
+        1 - unpromoted player 1 piece
+        2 - promoted player 1 piece
+        3 - unpromoted player 2 piece
+        4 - promoted player 2 piece
+
+        :param sample_board: rows of digits representing the desired board.
+        :return: a Board with the specified pieces in the specified positions.
+        """
+        return
+
+    @staticmethod
+    def create_standard_board() -> Board:
+        return
 
     @staticmethod
     def _valid_moves(board: Board, player: int) -> Tuple[Tuple[int, int], ...]: return

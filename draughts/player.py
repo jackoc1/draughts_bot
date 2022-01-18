@@ -64,7 +64,7 @@ class HumanPlayer(AbstractPlayer):
     def __init__(self, name: str, game: Draughts, display: AbstractDisplay) -> None:
         super().__init__(name, game, display)
 
-    def get_move(self, valid_moves) -> Tuple[int, int]: return
+    def get_move(self, valid_moves: Tuple[Tuple[Tuple[int, int], Tuple[int, int]], ...]) -> Tuple[int, int]: return
 
     def accept_draw(self) -> bool: return
 
@@ -80,7 +80,7 @@ class BotPlayer(AbstractPlayer):
         super().__init__(name, game, display)
         self._bot = bot
 
-    def get_move(self, valid_moves) -> Tuple[(int, int), (int, int)]: return
+    def get_move(self, valid_moves: Tuple[Tuple[Tuple[int, int], Tuple[int, int]], ...]) -> Tuple[(int, int)]: return
 
     def accept_draw(self) -> bool: return
 
