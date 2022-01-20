@@ -164,7 +164,6 @@ class DraughtsTest(unittest.TestCase):
                 self.fail("Valid moves returned an impossible move")
 
     def test_valid_moves_only_returns_moves_with_a_piece_on_the_starting_square_of_the_move_complex_game_state(self):
-        """Could strengthen by moving pieces around board a bit."""
         complex_board = self.complex_game.get_board()
 
         for move in Draughts.valid_moves(complex_board, 0):
@@ -173,7 +172,12 @@ class DraughtsTest(unittest.TestCase):
                 self.fail("Valid moves returned an impossible move")
 
     def test_valid_moves_only_returns_moves_with_ending_square_empty_turn_one_game_state(self):
-        pass
+        complex_board = self.complex_game.get_board()
+
+        for move in Draughts.valid_moves(complex_board, 0):
+            ending_position = move[1]
+            if complex_board.get_piece(ending_position) != 0:
+                self.fail("Valid moves returned an impossible move")
 
     def test_valid_moves_player_1_only_returns_moves_for_player_1_turn_one_game_state(self):
         """Could strengthen by moving pieces around board a bit."""
@@ -221,7 +225,7 @@ class DraughtsTest(unittest.TestCase):
 
         self.assertEqual(test_valid_moves, valid_moves)
 
-    def test_valid_moves_player_1_unpromoted_player_1_piece_on_internal_square_one_diagonal_free(self):
+    def test_valid_moves_player_1_unpromoted_player_1_piece_on_internal_square_one_diagonal_blocked_by_own_piece(self):
         """Test the two invalid moves aren't returned. Can assume rest works as other tests cover."""
         test_board = Board()
         test_board.add_piece(0, (1, 1))
@@ -231,42 +235,93 @@ class DraughtsTest(unittest.TestCase):
         invalid_moves = (((1, 1), (2, 0)), ((4, 4), (5, 5)))
         valid_moves = Draughts.valid_moves(test_board, 0)
 
-        self.assertNotIn(invalid_moves[0], valid_moves)
-        self.assertNotIn(invalid_moves[1], valid_moves)
+        self.assertNotIn(invalid_moves[0], valid_moves, "Invalid diagonal move")
+        self.assertNotIn(invalid_moves[1], valid_moves, "Invalid diagonal move")
 
-    def test_valid_moves_player_1_unpromoted_piece_on_internal_square_no_diagonals_free(self):
+        self.assertIn(((1, 1), (2, 2)), valid_moves, "Missed valid diagonal move")
+        self.assertIn(((4, 4), (5, 3)), valid_moves, "Missed valid diagonal move")
+
+    def test_valid_moves_player_1_unpromoted_piece_on_internal_square_both_diagonals_blocked_by_own_pieces(self):
         """Test the two invalid moves aren't returned. Can assume rest works as other tests cover."""
         test_board = Board()
         test_board.add_piece(0, (1, 1))
         test_board.add_piece(0, (2, 0))
-        test_board.add_piece(0, (4, 4))
-        test_board.add_piece(0, (5, 5))
-        invalid_moves = (((1, 1), (2, 0)), ((4, 4), (5, 5)))
+        test_board.add_piece(0, (2, 2))
+        invalid_moves = (((1, 1), (2, 0)), ((1, 1), (2, 2)))
         valid_moves = Draughts.valid_moves(test_board, 0)
 
         self.assertNotIn(invalid_moves[0], valid_moves)
         self.assertNotIn(invalid_moves[1], valid_moves)
 
-    def test_valid_moves_player_1_unpromoted_piece_on_edge_square_only_diagonal_free(self):
-        pass
+    def test_valid_moves_player_1_unpromoted_piece_on_edge_square_only_diagonal_free_blocked_by_own_piece(self):
+        self.empty_board.add_piece(0, (2, 0))
+        self.empty_board.add_piece(0, (3, 1))
+        self.empty_board.add_piece(0, (3, 7))
+        self.empty_board.add_piece(0, (4, 6))
+        invalid_moves = (((2, 0), (3, 1)), ((3, 7), (4, 6)))
+        valid_moves = Draughts.valid_moves(self.empty_board, 0)
 
-    def test_valid_moves_player_1_unpromoted_piece_on_edge_square_only_diagonal_blocked(self):
+        self.assertNotIn(invalid_moves[0], valid_moves)
+        self.assertNotIn(invalid_moves[1], valid_moves)
+
+    def test_valid_moves_player_2_unpromoted_piece_on_edge_square_only_diagonal_free(self):
         pass
 
     def test_normal_move_not_in_valid_moves_if_capture_available_player_1_unpromoted_piece(self):
         pass
 
-    def test_player_1_can_not_capture_his_own_pieces_with_unpromoted_piece(self):
-        pass
+    def test_player_1_can_not_capture_his_own_unpromoted_pieces_with_unpromoted_piece(self):
+        self.empty_board.add_piece((0, 0))
+        self.empty_board.add_piece((1, 1))
+        valid_moves = Draughts.valid_moves(self.empty_board, 0)
+        invalid_capture = ((0, 0), (2, 2))
+
+        self.assertNotIn(invalid_capture, valid_moves)
+
+    def test_player_1_can_not_capture_his_own_promoted_pieces_with_unpromoted_piece(self):
+        self.empty_board.add_piece((0, 0))
+        self.empty_board.add_piece((1, 1))
+        self.empty_board.promote((1, 1))
+        valid_moves = Draughts.valid_moves(self.empty_board, 0)
+        invalid_capture = ((0, 0), (2, 2))
+
+        self.assertNotIn(invalid_capture, valid_moves)
 
     def test_valid_moves_player_2_unpromoted_piece_on_internal_square_both_diagonals_free(self):
-        pass
+        test_board = Board()
+        test_board.add_piece(1, (5, 5))
+        test_valid_moves = sorted((((5, 5), (4, 4)), ((5, 5), (4, 6))))
+        valid_moves = sorted(Draughts.valid_moves(test_board, 0))
 
-    def test_valid_moves_player_2_unpromoted_piece_on_internal_square_one_diagonal_free(self):
-        pass
+        self.assertEqual(test_valid_moves, valid_moves)
 
-    def test_valid_moves_player_2_unpromoted_piece_on_internal_square_no_diagonals_free(self):
-        pass
+    def test_valid_moves_player_2_unpromoted_piece_on_internal_square_one_diagonal_blocked_by_own_piece(self):
+        """Test the two invalid moves aren't returned. Can assume rest works as other tests cover."""
+        test_board = Board()
+        test_board.add_piece(1, (5, 5))
+        test_board.add_piece(1, (6, 6))
+        test_board.add_piece(1, (3, 3))
+        test_board.add_piece(1, (2, 2))
+        invalid_moves = (((5, 5), (6, 6)), ((3, 3), (2, 2)))
+        valid_moves = Draughts.valid_moves(test_board, 0)
+
+        self.assertNotIn(invalid_moves[0], valid_moves, "Invalid diagonal move")
+        self.assertNotIn(invalid_moves[1], valid_moves, "Invalid diagonal move")
+
+        self.assertIn(((5, 5), (4, 4)), valid_moves, "Missed valid diagonal move")
+        self.assertIn(((3, 3), (2, 4)), valid_moves, "Missed valid diagonal move")
+
+    def test_valid_moves_player_2_unpromoted_piece_on_internal_square_both_diagonals_blocked_by_own_pieces(self):
+        """Test the two invalid moves aren't returned. Can assume rest works as other tests cover."""
+        test_board = Board()
+        test_board.add_piece(1, (5, 5))
+        test_board.add_piece(1, (4, 4))
+        test_board.add_piece(1, (4, 6))
+        invalid_moves = (((5, 5), (4, 4)), ((5, 5), (4, 6)))
+        valid_moves = Draughts.valid_moves(test_board, 1)
+
+        self.assertNotIn(invalid_moves[0], valid_moves)
+        self.assertNotIn(invalid_moves[1], valid_moves)
 
     def test_valid_moves_player_2_unpromoted_piece_on_edge_square_only_diagonal_free(self):
         pass
@@ -277,8 +332,23 @@ class DraughtsTest(unittest.TestCase):
     def test_normal_move_not_in_valid_moves_if_capture_available_player_2_unpromoted_piece(self):
         pass
 
-    def test_player_2_can_not_capture_own_piece_with_unpromoted_piece(self):
-        pass
+    def test_player_2_can_not_capture_their_own_unpromoted_piece_with_unpromoted_piece(self):
+        self.empty_board.add_piece((7, 7))
+        self.empty_board.add_piece((6, 6))
+        self.empty_board.promote((6, 6))
+        valid_moves = Draughts.valid_moves(self.empty_board, 1)
+        invalid_capture = ((7, 7), (5, 5))
+
+        self.assertNotIn(invalid_capture, valid_moves)
+
+    def test_player_2_can_not_capture_their_own_promoted_pieces_with_unpromoted_piece(self):
+        self.empty_board.add_piece((7, 7))
+        self.empty_board.add_piece((6, 6))
+        self.empty_board.promote((6, 6))
+        valid_moves = Draughts.valid_moves(self.empty_board, 1)
+        invalid_capture = ((7, 7), (5, 5))
+
+        self.assertNotIn(invalid_capture, valid_moves)
 
     def test_valid_moves_promoted_player_1_piece_on_internal_square(self):
         pass
