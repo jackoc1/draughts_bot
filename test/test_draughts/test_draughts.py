@@ -51,6 +51,8 @@ class DraughtsTest(unittest.TestCase):
         complex_board = Draughts.create_custom_board(sample_board=sample_board)
         self.complex_game = Draughts(self.player_3, self.player_4, complex_board, auto_next_turn=False)
 
+        self.empty_board = Board()
+
     def test_pieces_in_right_place_on_default_init_8_by_8_standard_board(self):
         player_1_piece_positions = ((0, 0), (0, 2), (0, 4), (0, 6),
                                     (1, 1), (1, 3), (1, 5), (1, 7),
@@ -332,17 +334,90 @@ class DraughtsTest(unittest.TestCase):
     def test_if_prompted_to_move_again_turn_count_does_not_increment(self):
         pass
 
-    def test_player_1_unpromoted_piece_is_promoted_when_on_end_row_squares(self):
-        pass
+    def test_player_1_unpromoted_piece_is_promoted_when_on_end_row(self):
+        sample_board = ((0, 0, 0, 0, 0, 0, 0, 4),
+                        (1, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0))
+        custom_board = Draughts.create_custom_board(sample_board)
+        player_1_move_queue = [((6, 0), (7, 1))]
+        player_2_move_queue = [((7, 7), (6, 6)), ((6, 6), (7, 7))]
+        player_1 = MockPlayer("One", player_1_move_queue)
+        player_2 = MockPlayer("Two", player_2_move_queue)
+        game = Draughts(player_1, player_2, board=custom_board, auto_next_turn=False)
+        game.next_turn()
 
-    def test_player_1_piece_does_not_promote_on_squares_other_than_end_row_squares(self):
-        pass
+        piece = game.get_board().get_piece((7, 1))
+        self.assertTrue(piece.promoted)
 
-    def test_player_2_unpromoted_piece_is_promoted_when_on_beginning_row_squares(self):
-        pass
+    def test_player_1_piece_does_not_promote_on_rows_other_than_end_row(self):
+        sample_board = ((0, 0, 0, 0, 0, 0, 0, 4),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (1, 0, 0, 0, 0, 0, 0, 0))
+        custom_board = Draughts.create_custom_board(sample_board)
+        player_1_move_queue = [((0, 0), (1, 1)), ((1, 1), (2, 0)), ((2, 0), (3, 1)), ((3, 1), (4, 0)),
+                               ((4, 0), (5, 1)), ((5, 1), (6, 0))]
+        player_2_move_queue = [((7, 7), (6, 6)), ((6, 6), (7, 7))] * 10
+        player_1 = MockPlayer("One", player_1_move_queue)
+        player_2 = MockPlayer("Two", player_2_move_queue)
+        game = Draughts(player_1, player_2, board=custom_board, auto_next_turn=False)
+        while player_1.move_queue:
+            game.next_turn()
 
-    def test_player_2_piece_does_not_promote_on_squares_other_than_beginning_row_squares(self):
-        pass
+        piece = game.get_board().get_piece((6, 0))
+        self.assertFalse(piece.promoted)
+
+    def test_player_2_unpromoted_piece_is_promoted_when_on_beginning_row(self):
+        sample_board = ((0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 3),
+                        (2, 0, 0, 0, 0, 0, 0, 0))
+        custom_board = Draughts.create_custom_board(sample_board)
+        player_1_move_queue = [((0, 0), (1, 1))]
+        player_2_move_queue = [((1, 7), (0, 6))]
+        player_1 = MockPlayer("One", player_1_move_queue)
+        player_2 = MockPlayer("Two", player_2_move_queue)
+        game = Draughts(player_1, player_2, board=custom_board, auto_next_turn=False)
+        game.next_turn()
+        game.next_turn()
+
+        piece = game.get_board().get_piece((0, 6))
+        self.assertTrue(piece.promoted)
+
+    def test_player_2_piece_does_not_promote_on_rows_other_than_beginning_row(self):
+        sample_board = ((0, 0, 0, 0, 0, 0, 0, 3),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (0, 0, 0, 0, 0, 0, 0, 0),
+                        (2, 0, 0, 0, 0, 0, 0, 0))
+        custom_board = Draughts.create_custom_board(sample_board)
+        player_1_move_queue = [((0, 0), (1, 1)), ((1, 1), (0, 0))] * 10
+        player_2_move_queue = [((7, 7), (6, 6)), ((6, 6), (5, 7)), ((5, 7), (4, 6)),
+                               ((4, 6), (3, 7)), ((3, 7), (2, 6)), ((2, 6), (1, 7))]
+        player_1 = MockPlayer("One", player_1_move_queue)
+        player_2 = MockPlayer("Two", player_2_move_queue)
+        game = Draughts(player_1, player_2, board=custom_board, auto_next_turn=False)
+        while player_2.move_queue:
+            game.next_turn()
+
+        piece = game.get_board().get_piece((1, 7))
+        self.assertFalse(piece.promoted)
 
     def test_player_1_forfeited_sets_winner_to_player_2(self):
         self.player_1.move_queue = ["forfeit"]
