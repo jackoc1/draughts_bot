@@ -253,7 +253,16 @@ class DraughtsTest(unittest.TestCase):
         self.assertNotIn(invalid_moves[0], valid_moves)
         self.assertNotIn(invalid_moves[1], valid_moves)
 
-    def test_valid_moves_player_1_unpromoted_piece_on_edge_square_only_diagonal_free_blocked_by_own_piece(self):
+    def test_valid_moves_player_1_unpromoted_piece_on_edge_square_only_diagonal_free(self):
+        self.empty_board.add_piece(0, (2, 0))
+        self.empty_board.add_piece(0, (3, 7))
+        test_valid_moves = (((2, 0), (3, 1)), ((3, 7), (4, 6)))
+        valid_moves = Draughts.valid_moves(self.empty_board, 0)
+
+        self.assertIn(test_valid_moves[0], valid_moves)
+        self.assertIn(test_valid_moves[1], valid_moves)
+
+    def test_valid_moves_player_1_unpromoted_piece_on_edge_square_only_diagonal_blocked_by_own_piece(self):
         self.empty_board.add_piece(0, (2, 0))
         self.empty_board.add_piece(0, (3, 1))
         self.empty_board.add_piece(0, (3, 7))
@@ -265,22 +274,66 @@ class DraughtsTest(unittest.TestCase):
         self.assertNotIn(invalid_moves[1], valid_moves)
 
     def test_valid_moves_player_2_unpromoted_piece_on_edge_square_only_diagonal_free(self):
-        pass
+        self.empty_board.add_piece(1, (4, 0))
+        self.empty_board.add_piece(1, (3, 7))
+        test_valid_moves = (((4, 0), (3, 1)), ((3, 7), (2, 6)))
+        valid_moves = Draughts.valid_moves(self.empty_board, 1)
 
-    def test_normal_move_not_in_valid_moves_if_capture_available_player_1_unpromoted_piece(self):
-        pass
+        self.assertIn(test_valid_moves[0], valid_moves)
+        self.assertIn(test_valid_moves[1], valid_moves)
+
+    def test_valid_moves_player_2_unpromoted_piece_on_edge_square_only_diagonal_blocked(self):
+        self.empty_board.add_piece(1, (5, 7))
+        self.empty_board.add_piece(1, (4, 6))
+        self.empty_board.add_piece(1, (4, 0))
+        self.empty_board.add_piece(1, (3, 1))
+        invalid_moves = (((5, 7), (4, 6)), ((4, 0), (3, 1)))
+        valid_moves = Draughts.valid_moves(self.empty_board, 1)
+
+        self.assertNotIn(invalid_moves[0], valid_moves)
+        self.assertNotIn(invalid_moves[1], valid_moves)
+
+    def test_normal_moves_not_in_valid_moves_if_capture_available_player_1_unpromoted_piece(self):
+        self.empty_board.add_piece(0, (1, 1))
+        self.empty_board.add_piece(1, (2, 2))
+        self.empty_board.add_piece(0, (4, 4))
+        invalid_moves = (((1, 1), (0, 2)), ((4, 4), (5, 5)), ((4, 4), (5, 3)))
+        valid_moves = Draughts.valid_moves(self.empty_board, 0)
+
+        for move in invalid_moves:
+            if move in valid_moves:
+                self.fail("A normal move was offered despite a capture being available.")
+
+    def test_capture_offered_if_capture_available_player_1_unpromoted_piece(self):
+        self.empty_board.add_piece(0, (1, 3))
+        self.empty_board.add_piece(1, (2, 2))
+        self.empty_board.add_piece(1, (2, 4))
+        valid_moves = sorted(Draughts.valid_moves(self.empty_board, 0))
+        available_capture = sorted((((1, 3), (3, 1)), ((1, 3), (3, 5))))
+
+        self.assertEqual(available_capture, valid_moves)
+
+    def test_multiple_captures_offered_to_player_1_if_available_unpromoted_piece(self):
+        self.empty_board.add_piece(0, (1, 1))
+        self.empty_board.add_piece(1, (2, 2))
+        self.empty_board.add_piece(0, (4, 4))
+        self.empty_board.add_piece(1, (5, 3))
+        valid_moves = sorted(Draughts.valid_moves(self.empty_board, 0))
+        available_captures = sorted((((1, 1), (3, 3)), ((4, 4), (6, 2))))
+
+        self.assertEqual(available_captures, valid_moves)
 
     def test_player_1_can_not_capture_his_own_unpromoted_pieces_with_unpromoted_piece(self):
-        self.empty_board.add_piece((0, 0))
-        self.empty_board.add_piece((1, 1))
+        self.empty_board.add_piece(0, (0, 0))
+        self.empty_board.add_piece(0, (1, 1))
         valid_moves = Draughts.valid_moves(self.empty_board, 0)
         invalid_capture = ((0, 0), (2, 2))
 
         self.assertNotIn(invalid_capture, valid_moves)
 
     def test_player_1_can_not_capture_his_own_promoted_pieces_with_unpromoted_piece(self):
-        self.empty_board.add_piece((0, 0))
-        self.empty_board.add_piece((1, 1))
+        self.empty_board.add_piece(0, (0, 0))
+        self.empty_board.add_piece(0, (1, 1))
         self.empty_board.promote((1, 1))
         valid_moves = Draughts.valid_moves(self.empty_board, 0)
         invalid_capture = ((0, 0), (2, 2))
@@ -323,18 +376,50 @@ class DraughtsTest(unittest.TestCase):
         self.assertNotIn(invalid_moves[0], valid_moves)
         self.assertNotIn(invalid_moves[1], valid_moves)
 
-    def test_valid_moves_player_2_unpromoted_piece_on_edge_square_only_diagonal_free(self):
-        pass
+    def test_valid_moves_player_2_unpromoted_piece_on_edge_square_only_diagonal_blocked_by_own_piece(self):
+        self.empty_board.add_piece(1, (2, 0))
+        self.empty_board.add_piece(1, (1, 1))
+        self.empty_board.add_piece(1, (3, 7))
+        self.empty_board.add_piece(1, (2, 6))
+        invalid_moves = (((2, 0), (1, 1)), ((3, 7), (2, 6)))
+        valid_moves = Draughts.valid_moves(self.empty_board, 1)
 
-    def test_valid_moves_player_2_unpromoted_piece_on_edge_square_only_diagonal_blocked(self):
-        pass
+        self.assertNotIn(invalid_moves[0], valid_moves)
+        self.assertNotIn(invalid_moves[1], valid_moves)
 
-    def test_normal_move_not_in_valid_moves_if_capture_available_player_2_unpromoted_piece(self):
-        pass
+    def test_normal_moves_not_in_valid_moves_if_capture_available_player_2_unpromoted_piece(self):
+        self.empty_board.add_piece(1, (4, 4))
+        self.empty_board.add_piece(1, (7, 7))
+        self.empty_board.add_piece(0, (3, 3))
+        invalid_moves = (((4, 4), (3, 5)), ((7, 7), (6, 6)))
+        valid_moves = Draughts.valid_moves(self.empty_board, 1)
+
+        for move in invalid_moves:
+            if move in valid_moves:
+                self.fail("A normal move was offered despite a capture being available.")
+
+    def test_capture_offered_if_capture_available_player_2_unpromoted_piece(self):
+        self.empty_board.add_piece(1, (3, 3))
+        self.empty_board.add_piece(0, (2, 2))
+        self.empty_board.add_piece(0, (2, 4))
+        valid_moves = sorted(Draughts.valid_moves(self.empty_board, 1))
+        available_capture = sorted(((3, 3), (1, 5), ((3, 3), (1, 1))))
+
+        self.assertEqual(available_capture, valid_moves)
+
+    def test_multiple_captures_offered_to_player_2_if_available_unpromoted_piece(self):
+        self.empty_board.add_piece(0, (1, 1))
+        self.empty_board.add_piece(1, (2, 2))
+        self.empty_board.add_piece(0, (4, 4))
+        self.empty_board.add_piece(1, (5, 3))
+        valid_moves = sorted(Draughts.valid_moves(self.empty_board, 1))
+        available_captures = sorted((((2, 2), (0, 0)), ((4, 4), (3, 5))))
+
+        self.assertEqual(available_captures, valid_moves)
 
     def test_player_2_can_not_capture_their_own_unpromoted_piece_with_unpromoted_piece(self):
-        self.empty_board.add_piece((7, 7))
-        self.empty_board.add_piece((6, 6))
+        self.empty_board.add_piece(1, (7, 7))
+        self.empty_board.add_piece(1, (6, 6))
         self.empty_board.promote((6, 6))
         valid_moves = Draughts.valid_moves(self.empty_board, 1)
         invalid_capture = ((7, 7), (5, 5))
@@ -342,8 +427,8 @@ class DraughtsTest(unittest.TestCase):
         self.assertNotIn(invalid_capture, valid_moves)
 
     def test_player_2_can_not_capture_their_own_promoted_pieces_with_unpromoted_piece(self):
-        self.empty_board.add_piece((7, 7))
-        self.empty_board.add_piece((6, 6))
+        self.empty_board.add_piece(1, (7, 7))
+        self.empty_board.add_piece(1, (6, 6))
         self.empty_board.promote((6, 6))
         valid_moves = Draughts.valid_moves(self.empty_board, 1)
         invalid_capture = ((7, 7), (5, 5))
@@ -351,13 +436,26 @@ class DraughtsTest(unittest.TestCase):
         self.assertNotIn(invalid_capture, valid_moves)
 
     def test_valid_moves_promoted_player_1_piece_on_internal_square(self):
-        pass
+        self.empty_board.add_piece(0, (2, 2))
+        test_valid_moves = sorted((((2, 2), (1, 1)), ((2, 2), (1, 3)), ((2, 2), (3, 1)), ((2, 2), (3, 3))))
+        valid_moves = sorted(Draughts.valid_moves(self.empty_board, 0))
+
+        self.assertEqual(test_valid_moves, valid_moves)
 
     def test_valid_moves_promoted_player_1_piece_on_edge_square(self):
-        pass
+        self.empty_board.add_piece(0, (6, 0))
+        self.empty_board.add_piece(0, (3, 7))
+        test_valid_moves = sorted((((6, 0), (7, 1)), ((6, 0), (5, 1)), ((3, 7), (2, 6)), ((3, 7), (4, 6))))
+        valid_moves = sorted(Draughts.valid_moves(self.empty_board, 0))
+
+        self.assertEqual(test_valid_moves, valid_moves)
 
     def test_valid_moves_promoted_player_1_piece_on_end_square(self):
-        pass
+        self.empty_board.add_piece(0, (7, 6))
+        test_valid_moves = sorted((((7, 5), (6, 4)), ((7, 5), (6, 6))))
+        valid_moves = sorted(Draughts.valid_moves(self.empty_board, 0))
+
+        self.assertEqual(test_valid_moves, valid_moves)
 
     def test_valid_moves_promoted_player_1_piece_on_beginning_square(self):
         pass
@@ -365,7 +463,13 @@ class DraughtsTest(unittest.TestCase):
     def test_player_1_can_not_capture_own_piece_with_promoted_piece(self):
         pass
 
-    def test_normal_move_not_in_valid_moves_if_capture_available_player_1_promoted_piece(self):
+    def test_normal_moves_not_in_valid_moves_if_capture_available_player_1_promoted_piece(self):
+        pass
+
+    def test_capture_offered_if_capture_available_player_1_promoted_piece(self):
+        pass
+
+    def test_multiple_captures_offered_to_player_1_if_available_promoted_piece(self):
         pass
 
     def test_valid_moves_promoted_player_2_piece_on_internal_square(self):
@@ -380,7 +484,13 @@ class DraughtsTest(unittest.TestCase):
     def test_player_2_can_not_capture_own_piece_with_promoted_piece(self):
         pass
 
-    def test_normal_move_not_in_valid_moves_if_capture_available_player_2_promoted_piece(self):
+    def test_normal_moves_not_in_valid_moves_if_capture_available_player_2_promoted_piece(self):
+        pass
+
+    def test_capture_offered_if_capture_available_player_2_promoted_piece(self):
+        pass
+
+    def test_multiple_captures_offered_to_player_2_if_available_promoted_piece(self):
         pass
 
     def test_only_player_1_to_move_on_odd_turns(self):
@@ -401,7 +511,10 @@ class DraughtsTest(unittest.TestCase):
     def test_player_2_prompted_to_move_again_if_another_capture_available(self):
         pass
 
-    def test_if_prompted_to_move_again_turn_count_does_not_increment(self):
+    def test_if_player_1_prompted_to_move_again_after_capture_turn_count_does_not_increment(self):
+        self.empty_board.add_piece()
+
+    def test_if_player_2_prompted_to_move_again_after_capture_turn_count_does_not_increment(self):
         pass
 
     def test_player_1_unpromoted_piece_is_promoted_when_on_end_row(self):
@@ -502,6 +615,12 @@ class DraughtsTest(unittest.TestCase):
         self.game.next_turn()
 
         self.assertIs(self.game.winner, self.player_2)
+
+    def test_player_1_prompted_to_move_again_if_draw_rejected(self):
+        pass
+
+    def test_player_2_prompted_to_move_again_if_draw_rejected(self):
+        pass
 
     def test_player_1_offered_draw_sets_turn_draw_offered_to_current_turn_count(self):
         self.player_1.move_queue = ["draw", ((2, 0), (3, 1))]
