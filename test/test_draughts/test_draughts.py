@@ -1,7 +1,7 @@
 import unittest
-from typing import Tuple, List
+from typing import Tuple, List, Union
 
-from draughts.draughts import Draughts
+from draughts.draughts import Draughts, Move
 from draughts.player import AbstractPlayer
 from draughts.board import Board
 
@@ -11,14 +11,14 @@ class MockPlayer(AbstractPlayer):
     Feeling somewhat clever trying to come up with a mock player despite not actually looking very far into mocking
     practices. move_stack to be able to have player 1 and 2 play against each other just using API calls feels good.
     """
-    def __init__(self, name: str, move_queue: List[Tuple[Tuple[int, int], Tuple[int, int]], ...] = None,
+    def __init__(self, name: str, move_queue: List[Union[Move, str], ...] = None,
                  accept: bool = None):
         super(name)
         self.move_queue = move_queue
         self.accept = accept
 
-    def get_move(self, valid_moves: Tuple[Tuple[Tuple[int, int], Tuple[int, int]], ...]) \
-            -> Tuple[Tuple[int, int], Tuple[int, int]]:
+    def get_move(self, valid_moves: Tuple[Move, ...]) \
+            -> Move:
         return self.move_queue.pop(0)
 
     def accept_draw(self) -> bool:

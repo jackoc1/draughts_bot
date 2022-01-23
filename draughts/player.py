@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Tuple
 
 from draughts.display import AbstractDisplay
-from draughts.draughts import Draughts
+from draughts.draughts import Draughts, Move, Position
 from draughts.board import Board
 
 from draughts_bots.abstract_bot import AbstractBot
@@ -23,8 +23,7 @@ class AbstractPlayer(ABC):
     name = property(lambda self: self._name)
 
     @abstractmethod
-    def get_move(self, valid_moves: Tuple[Tuple[Tuple[int, int], Tuple[int, int]], ...]) \
-            -> Tuple[Tuple[int, int], Tuple[int, int]]:
+    def get_move(self, valid_moves: Tuple[Move, ...]) -> Move:
         return
 
     @abstractmethod

@@ -1,6 +1,9 @@
-from typing import Tuple
+from typing import Tuple, Union
 from draughts.board import Board
 from draughts.player import AbstractPlayer
+
+Position = Tuple[int, int]
+Move = Tuple[Position, Position]
 
 
 class Draughts:
@@ -26,7 +29,7 @@ class Draughts:
     def get_board(self) -> Board: return self._board.get_board()
 
     @staticmethod
-    def valid_moves(board: Board, player: int) -> Tuple[Tuple[Tuple[int, int], Tuple[int, int]], ...]: return
+    def valid_moves(board: Board, player: int) -> Tuple[Union[Move, str], ...]: return
 
     def next_turn(self) -> None: return  # do not increment when draw offered or multiple capture
 
@@ -54,8 +57,8 @@ class Draughts:
         return
 
     @staticmethod
-    def _valid_moves(board: Board, player: int) -> Tuple[Tuple[int, int], ...]: return
+    def _valid_moves(board: Board, player: int) -> Tuple[Move, ...]: return
     # flip board and apply player1 logic for player2 valid moves
 
     @staticmethod
-    def _valid_captures(board: Board, player: int) -> Tuple[(int, int), ...]: return
+    def _valid_captures(board: Board, player: int) -> Tuple[Move, ...]: return

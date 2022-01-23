@@ -108,10 +108,10 @@ class BoardTest(unittest.TestCase):
     def test_get_piece_returns_equivalent_piece_for_occupied_squares(self):
         piece_position_1, piece_position_2, piece_position_3, piece_position_4 = (1, 3), (5, 2), (6, 5), (7, 4)
         colour_1, colour_2, colour_3, colour_4 = 0, 0, 1, 1
-        self.board.add_piece(colour_1, (0, piece_position_1))
-        self.board.add_piece(colour_2, (0, piece_position_2))
-        self.board.add_piece(colour_3, (0, piece_position_3))
-        self.board.add_piece(colour_4, (0, piece_position_4))
+        self.board.add_piece(colour_1, piece_position_1)
+        self.board.add_piece(colour_2, piece_position_2)
+        self.board.add_piece(colour_3, piece_position_3)
+        self.board.add_piece(colour_4, piece_position_4)
         self.board.promote(piece_position_2)
         self.board.promote(piece_position_4)
 
@@ -180,12 +180,12 @@ class BoardTest(unittest.TestCase):
         start_position_1 = (2, 0)
         end_position_1 = (3, 1)
         piece_1 = self.board.get_piece(start_position_1)
-        self.board.move(start_position_1, end_position_1)
+        self.board.move((start_position_1, end_position_1))
 
         start_position_2 = (5, 3)
         end_position_2 = (4, 4)
         piece_2 = self.board.get_piece(start_position_2)
-        self.board.move(start_position_2, end_position_2)
+        self.board.move((start_position_2, end_position_2))
 
         self.assertEqual(piece_1, self.board.get_piece(end_position_1))
         self.assertEqual(piece_2, self.board.get_piece(end_position_2))
@@ -193,11 +193,11 @@ class BoardTest(unittest.TestCase):
     def test_moved_piece_previous_position_now_empty(self):
         start_position_1 = (2, 0)
         end_position_1 = (3, 1)
-        self.board.move(start_position_1, end_position_1)
+        self.board.move((start_position_1, end_position_1))
 
         start_position_2 = (5, 3)
         end_position_2 = (4, 4)
-        self.board.move(start_position_2, end_position_2)
+        self.board.move((start_position_2, end_position_2))
 
         self.assertEqual(0, self.board.get_piece(start_position_1))
         self.assertEqual(0, self.board.get_piece(start_position_2))
@@ -237,6 +237,13 @@ class BoardTest(unittest.TestCase):
         self.assertRaises(ValueError, self.board.move, (start_position_2, end_position_2))
         self.assertRaises(ValueError, self.board.move, (start_position_3, end_position_3))
         self.assertRaises(ValueError, self.board.move, (start_position_4, end_position_4))
+
+    def test_occupied_error_raised_if_end_position_of_move_occupied(self):
+        self.board.add_piece(1, (7, 7))
+        self.board.add_piece(1, (6, 6))
+        invalid_move = ((7, 7), (6, 6))
+
+        self.assertRaises(OccupiedError, self.board.move, invalid_move)
 
     def test_value_error_raised_if_invalid_position_passed_to_add_piece(self):
         """4 positions for the 4 edges of the board you can fall off."""
