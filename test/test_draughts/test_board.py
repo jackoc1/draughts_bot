@@ -1,6 +1,6 @@
 import unittest
 
-from draughts.board import Board, Piece
+from draughts.board import Board, Piece, OccupiedError
 
 
 class BoardTest(unittest.TestCase):
@@ -108,10 +108,10 @@ class BoardTest(unittest.TestCase):
     def test_get_piece_returns_equivalent_piece_for_occupied_squares(self):
         piece_position_1, piece_position_2, piece_position_3, piece_position_4 = (1, 3), (5, 2), (6, 5), (7, 4)
         colour_1, colour_2, colour_3, colour_4 = 0, 0, 1, 1
-        self.board.add_piece(colour_1, piece_position_1)
-        self.board.add_piece(colour_2, piece_position_2)
-        self.board.add_piece(colour_3, piece_position_3)
-        self.board.add_piece(4, piece_position_4)
+        self.board.add_piece(colour_1, (0, piece_position_1))
+        self.board.add_piece(colour_2, (0, piece_position_2))
+        self.board.add_piece(colour_3, (0, piece_position_3))
+        self.board.add_piece(colour_4, (0, piece_position_4))
         self.board.promote(piece_position_2)
         self.board.promote(piece_position_4)
 
@@ -242,10 +242,16 @@ class BoardTest(unittest.TestCase):
         """4 positions for the 4 edges of the board you can fall off."""
         position_1, position_2, position_3, position_4 = (-1, 3), (10, 4), (3, -2), (6, 9)
 
-        self.assertRaises(ValueError, self.board.add_piece, position_1)
-        self.assertRaises(ValueError, self.board.add_piece, position_2)
-        self.assertRaises(ValueError, self.board.add_piece, position_3)
-        self.assertRaises(ValueError, self.board.add_piece, position_4)
+        self.assertRaises(ValueError, self.board.add_piece, (0, position_1))
+        self.assertRaises(ValueError, self.board.add_piece, (0, position_2))
+        self.assertRaises(ValueError, self.board.add_piece, (0, position_3))
+        self.assertRaises(ValueError, self.board.add_piece, (0, position_4))
+
+    def test_occupied_error_raised_if_position_passed_to_add_piece_is_already_occupied(self):
+        position = (1, 1)
+        self.board.add_piece(0, position)
+
+        self.assertRaises(OccupiedError, self.board.add_piece, (0, position))
 
     def test_value_error_raised_if_invalid_position_passed_to_remove_piece(self):
         """4 positions for the 4 edges of the board you can fall off."""
