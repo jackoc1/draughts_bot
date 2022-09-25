@@ -6,7 +6,7 @@ Move = Tuple[Position, Position]
 
 class Board:
     def __init__(self, num_rows: int = 8, num_cols: int = 8) -> None:
-        self._board: List[List[Union[int, Piece]]] = [[0] * num_rows] * num_cols
+        self._board: Tuple[List[Union[int, Piece]], ...] = tuple([[0] * num_rows] * num_cols)
         self._num_rows = num_rows
         self._num_cols = num_cols
 
@@ -18,14 +18,38 @@ class Board:
         self._board[move[0][0]][move[0][1]] = 0
         self._board[move[1][0]][move[1][1]] = piece
 
+    def get_piece(self, position: Position) -> "Piece":
+        """Returns new copy of piece"""
+        piece = self._board[position[0]][position[1]]
+        if piece:
+            new_piece = Piece(piece.colour)
+            if piece.promoted:
+                new_piece.promote()
+        else:
+            new_piece = 0
+
+        return new_piece
+
     def get_board(self) -> "Board":  # don't expose internals
-        pass
+        new_board = Board(self.num_rows, self.num_cols)
+        for row in range(self.num_rows):
+            for col in range(self.num_cols):
+                if piece := self.get_piece((row, col)):
+                    new_board.add_piece(piece.colour, (row, col))
+                    if piece.promoted:
+                        new_board.promote((row, col))
+
+        return new_board
 
     def get_player_pieces(self, colour: int) -> Tuple[Tuple["Piece", Position], ...]:
-        pass
+        player_pieces = []
+        for row in range(self.num_rows):
+            for col in range(self.num_cols):
+                piece = self.get_piece((row, col))
+                if piece and piece.colour == colour:
+                    player_pieces.append((piece, (row, col)))
 
-    def get_piece(self, position: Position) -> "Piece":
-        pass
+        return tuple(player_pieces)
 
     def promote(self, position: Position) -> None:
         if self.get_piece(position):

@@ -30,8 +30,8 @@ class BoardTest(unittest.TestCase):
         self.populated_board.promote(self.piece_position_4)
 
     def test_empty_squares_equal_zero(self):
-        for row in self.board.num_rows:
-            for col in self.board.num_cols:
+        for row in range(self.board.num_rows):
+            for col in range(self.board.num_cols):
                 if self.board.get_piece((row, col)) != 0:
                     self.fail("Empty board does not consist of only zeroes.")
 
@@ -173,8 +173,8 @@ class BoardTest(unittest.TestCase):
                 self.fail("Player 2's pieces do not match the pieces on the board.")
 
     def test_get_player_returns_empty_list_for_players_with_no_pieces(self):
-        self.assertEqual([], self.board.get_player_pieces(0))
-        self.assertEqual([], self.board.get_player_pieces(1))
+        self.assertEqual((), self.board.get_player_pieces(0))
+        self.assertEqual((), self.board.get_player_pieces(1))
 
     def test_moved_piece_in_right_position(self):
         start_position_1 = (2, 0)
